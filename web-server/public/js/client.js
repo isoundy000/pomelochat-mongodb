@@ -132,10 +132,15 @@ function setRoom() {
 	$("#room").text(rid);
 };
 
-// show error
-function showError(content) {
+// show login error
+function showLoginError(content) {
 	$("#loginError").text(content);
 	$("#loginError").show();
+};
+// show register error
+function showRegisterError(content) {
+	$("#registerError").text(content);
+	$("#registerError").show();
 };
 
 // show login panel
@@ -144,6 +149,19 @@ function showLogin() {
 	$("#chatHistory").hide();
 	$("#toolbar").hide();
 	$("#loginError").hide();
+	$("#registerView").hide();
+	$("#registerError").hide();
+	$("#loginUser").focus();
+};
+
+// show register panel
+function showRegister() {
+	$("#loginView").hide();
+	$("#chatHistory").hide();
+	$("#toolbar").hide();
+	$("#loginError").hide();
+	$("#registerView").show();
+	$("#registerError").hide();
 	$("#loginUser").focus();
 };
 
@@ -151,6 +169,8 @@ function showLogin() {
 function showChat() {
 	$("#loginView").hide();
 	$("#loginError").hide();
+	$("#registerView").hide();
+	$("#registerError").hide();
 	$("#toolbar").show();
 	$("entry").focus();
 	scrollDown(base);
@@ -169,7 +189,7 @@ function queryEntry(uid, callback) {
 		}, function(data) {
 			pomelo.disconnect();
 			if(data.code === 500) {
-				showError(LOGIN_ERROR);
+				showLoginError(LOGIN_ERROR);
 				return;
 			}
 			callback(data.host, data.port);
@@ -215,12 +235,12 @@ $(document).ready(function() {
 		rid = $('#channelList').val();
 
 		if(username.length > 20 || username.length == 0 || rid.length > 20 || rid.length == 0) {
-			showError(LENGTH_ERROR);
+			showLoginError(LENGTH_ERROR);
 			return false;
 		}
 
 		if(!reg.test(username) || !reg.test(rid)) {
-			showError(NAME_ERROR);
+			showLoginError(NAME_ERROR);
 			return false;
 		}
 
@@ -237,7 +257,7 @@ $(document).ready(function() {
 					rid: rid
 				}, function(data) {
 					if(data.error) {
-						showError(DUPLICATE_ERROR);
+						showLoginError(DUPLICATE_ERROR);
 						return;
 					}
 					setName();
@@ -269,5 +289,12 @@ $(document).ready(function() {
 				}
 			});
 		}
+	});
+
+	$('#toRegister').click(function(){
+		showRegister();
+	});
+	$('#toLogin').click(function(){
+		showLogin();
 	});
 });

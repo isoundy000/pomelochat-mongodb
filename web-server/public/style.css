@@ -62,6 +62,54 @@ body, table {
     margin-top: 15px;
 }
 
+#registerView {
+    width: 100%;
+    font-size: 13pt;
+    overflow: hidden;
+}
+
+#registerTitle {
+    width: 100%;
+    margin-top: 150px;
+    font-size: 50pt;
+    text-align: center;
+}
+
+#registerView input[type = "text"] {
+    height: 30px;
+    width: 270px;
+    font-size: inherit;
+    margin-left: 15px;
+}
+
+#registerView input[type = "button"] {
+    height: 30px;
+    width: 90px;
+    font-size: inherit;
+}
+
+#registerView table {
+    width: 100%;
+    height: 100%;
+    margin-top: 10%;
+}
+
+#registerView table tr {
+    text-align: center;
+    height: 50%;
+}
+
+#registerView table tr td {
+    padding-top: 25px;
+}
+
+#registerError {
+    text-align: center;
+    font-size: 16pt;
+    color: #ff0000;
+    margin-top: 15px;
+}
+
 #chatHistory {
     padding-bottom: 5.1em;
 }
