@@ -39,16 +39,47 @@
                     </tr>
                     <tr>
                         <td>
+                            <input id="loginPwd" type="text" placeholder="enter your password" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
                             <input name="channels" type="text" id="channelList" placeholder="enter your channel"
                             />
                         </td>
                         <tr>
                             <td>
                                 <input id="login" type='button' value="join" />
+                                &nbsp;<a href="javascript:;" id="toRegister">没有账号？注册一个</a>
                             </td>
                         </tr>
                 </table>
                 <div id="loginError">
+                </div>
+            </div>
+            <div id="registerView">
+                <div id="registerTitle">
+                    Chat of Pomelo
+                </div>
+                <table>
+                    <tr>
+                        <td>
+                            <input id="registerUser" type="text" placeholder="enter your name" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input id="registerPwd" type="text" placeholder="enter your password" />
+                        </td>
+                    </tr>
+                        <tr>
+                            <td>
+                                <input id="register" type='button' value="register" />
+                                &nbsp;有账号，直接<a href="javascript:;" id="toLogin">登录</a>
+                            </td>
+                        </tr>
+                </table>
+                <div id="registerError">
                 </div>
             </div>
             <div id="chatHistory">
