@@ -10,6 +10,7 @@ var LENGTH_ERROR = "Name/Channel is too long or too short. 20 character max.";
 var NAME_ERROR = "Bad character in Name/Channel. Can only have letters, numbers, Chinese characters, and '_'";
 var DUPLICATE_ERROR = "Please change your name to login.";
 
+
 util = {
 	urlRE: /https?:\/\/([-\w\.]+)+(:\d+)?(\/([^\s]*(\?\S+)?)?)?/g,
 	//  html sanitizer
@@ -227,6 +228,31 @@ $(document).ready(function() {
 	//handle disconect message, occours when the client is disconnect with servers
 	pomelo.on('disconnect', function(reason) {
 		showLogin();
+	});
+
+	//deal with register button click
+	$('#register').click(function(){
+		var username = $('#registerUser').val().trim();
+		var password = $('#registerPwd').val().trim();
+		if(username.length > 20 || username.length == 0) {
+			showRegisterError(LENGTH_ERROR);
+			return false;
+		}
+		if(!reg.test(username)) {
+			showRegisterError(NAME_ERROR);
+			return false;
+		}
+
+		$.post('http://127.0.0.1:3002/register',{username:username,password:password},function(data){
+			console.log(data);
+			if(data.code===501){
+				alert('Username already exists.')
+			}else if(data.code===200){
+				alert('Register success.');
+			}else{
+				alert('Register fail.');
+			}
+		})
 	});
 
 	//deal with login button click.
