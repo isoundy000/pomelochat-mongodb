@@ -1,4 +1,4 @@
-var mongoose = request('mongoose');
+var mongoose = require('mongoose');
 
 var UserSchema = new mongoose.Schema({
     username:String,
@@ -35,3 +35,5 @@ UserSchema.statics = {
         .exec(cb);
     }
 }
+
+module.exports = UserSchema;

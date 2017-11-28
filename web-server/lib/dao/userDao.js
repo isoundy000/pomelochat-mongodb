@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var UserSchema = require('userSchema.js');
+var User = require('./models/user.js');
 var userDao = module.exports;
 
 /**
@@ -8,7 +8,7 @@ var userDao = module.exports;
  * @param {function} cb
  */
 userDao.getUserByName = function (username, cb){
-    UserSchema.findByUsername(username,function(err,user){
+    User.findByUsername(username,function(err,user){
         if(err){
             cb(err.message,null);
         }else{
@@ -29,13 +29,13 @@ userDao.getUserByName = function (username, cb){
  * @param {function} cb Call back function.
  */
 userDao.createUser = function(username,password,from,cb){
-    UserSchema.findByUsername(username,function(err,user){
+    User.findByUsername(username,function(err,user){
         if(err){
             cb(err.message,null);
         }else if(user){
             cb('this username has exists.',null);
         }else{
-            var _user = new UserSchema({
+            var _user = new User({
                 username:username,
                 password:password,
                 from:from,

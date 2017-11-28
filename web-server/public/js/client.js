@@ -9,7 +9,7 @@ var LOGIN_ERROR = "There is no server to log in, please wait.";
 var LENGTH_ERROR = "Name/Channel is too long or too short. 20 character max.";
 var NAME_ERROR = "Bad character in Name/Channel. Can only have letters, numbers, Chinese characters, and '_'";
 var DUPLICATE_ERROR = "Please change your name to login.";
-
+var hostPost = location.protocol+'//'+location.host;
 
 util = {
 	urlRE: /https?:\/\/([-\w\.]+)+(:\d+)?(\/([^\s]*(\?\S+)?)?)?/g,
@@ -232,7 +232,7 @@ $(document).ready(function() {
 
 	//deal with register button click
 	$('#register').click(function(){
-		var username = $('#registerUser').val().trim();
+		username = $('#registerUser').val().trim();
 		var password = $('#registerPwd').val().trim();
 		if(username.length > 20 || username.length == 0) {
 			showRegisterError(LENGTH_ERROR);
@@ -243,8 +243,7 @@ $(document).ready(function() {
 			return false;
 		}
 
-		$.post('http://127.0.0.1:3002/register',{username:username,password:password},function(data){
-			console.log(data);
+		$.post(hostPost+'/register',{username:username,password:password},function(data){
 			if(data.code===501){
 				alert('Username already exists.')
 			}else if(data.code===200){
@@ -258,7 +257,8 @@ $(document).ready(function() {
 	//deal with login button click.
 	$("#login").click(function() {
 		username = $("#loginUser").attr("value");
-		rid = $('#channelList').val();
+		var password = $('#loginPwd').val().trim();
+		rid = $('#channelList').val().trim();
 
 		if(username.length > 20 || username.length == 0 || rid.length > 20 || rid.length == 0) {
 			showLoginError(LENGTH_ERROR);
@@ -269,30 +269,38 @@ $(document).ready(function() {
 			showLoginError(NAME_ERROR);
 			return false;
 		}
-
-		//query entry of connection
-		queryEntry(username, function(host, port) {
-			pomelo.init({
-				host: host,
-				port: port,
-				log: true
-			}, function() {
-				var route = "connector.entryHandler.enter";
-				pomelo.request(route, {
-					username: username,
-					rid: rid
-				}, function(data) {
-					if(data.error) {
-						showLoginError(DUPLICATE_ERROR);
-						return;
-					}
-					setName();
-					setRoom();
-					showChat();
-					initUserList(data);
+		$.post(hostPost+'/login',{username:username,password:password},function(data){
+			console.warn(data.code);
+			if(data.code!==200){
+				showLoginError(data.code+' '+data.message);
+			}else{
+				//query entry of connection
+				queryEntry(username, function(host, port) {
+					pomelo.init({
+						host: host,
+						port: port,
+						log: true
+					}, function() {
+						var route = "connector.entryHandler.enter";
+						pomelo.request(route, {
+							username: username,
+							rid: rid
+						}, function(data) {
+							if(data.error) {
+								showLoginError(DUPLICATE_ERROR);
+								return;
+							}
+							setName();
+							setRoom();
+							showChat();
+							initUserList(data);
+						});
+					});
 				});
-			});
-		});
+			}
+		})
+
+		
 	});
 
 	//deal with chat mode.
